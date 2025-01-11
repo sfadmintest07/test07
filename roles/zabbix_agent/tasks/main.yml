@@ -1,0 +1,36 @@
+---
+- name: Download Zabbix repository package
+  get_url:
+    url: "{{ zabbix_repo_url }}"
+    dest: /tmp/zabbix-release.deb
+  when: zabbix_use_repo
+
+- name: Install Zabbix repository package
+  apt:
+    deb: /tmp/zabbix-release.deb
+  when: zabbix_use_repo
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: zabbix_use_repo
+
+- name: Install Zabbix Agent
+  apt:
+    name: zabbix-agent
+    state: present
+
+- name: Configure Zabbix Agent
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart zabbix-agent
+
+- name: Ensure Zabbix Agent is running and enabled
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes

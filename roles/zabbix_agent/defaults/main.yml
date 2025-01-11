@@ -1,0 +1,4 @@
+---
+zabbix_server_ip: 158.160.152.224
+zabbix_use_repo: true
+zabbix_repo_url: "https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_5.0+ubuntu20.04_all.deb"
